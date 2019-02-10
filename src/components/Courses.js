@@ -20,15 +20,43 @@ class Courses extends Component {
   }
 
   renderCourses(key) {
+    var self = this;
+    key = key.toLowerCase();
+    key = key.replace(/\s/g, '');
+    
       var htmlReturn = []; 
       {Object.keys(courses).map((index) => {
+        
         var stringNum = "" + courses[index]["number"];
         var dept = courses[index]["dept"];
         var title = courses[index]["title"];
         var description = courses[index]["description"];
         var cross = courses[index]["cross-listed"];
         var pre = courses[index]["prereqs"];
-        if(stringNum.charAt(0) === key.charAt(0)) {
+
+        var searchCriteria = ""; 
+        var filter = self.props.filter; 
+
+        var match = false; 
+
+        //depending on the tick, we change what searchCriteria is 
+        if(filter === "course") {
+          searchCriteria = dept + stringNum;
+          match = cross !== undefined && this.handleFilterList(cross, key);
+        } else if (filter === "title") {
+          searchCriteria = title; 
+        } else if(filter === "prereqs") {
+          match = pre !== undefined && this.handleFilterList(pre, key); 
+        }
+
+        //if we haven't hit the two cases where we selected a cross list or prereq 
+        searchCriteria = searchCriteria.toLowerCase();
+        searchCriteria = searchCriteria.replace(/\s/g, '');
+
+        if(!match) {
+          match = searchCriteria.includes(key) && key !== "";
+        }
+        if(match) {
           //Button that changes what is previewed 
           htmlReturn.push(
             <Button className="course" onClick={() => this.handleShow(stringNum,
@@ -40,6 +68,25 @@ class Courses extends Component {
       })}
       
       return htmlReturn;
+  }
+
+  handleFilterList(list, searchFor) {
+
+    //checks if the textbox is blank 
+    if(searchFor === "") {
+      return false;
+    }
+
+    //checks for a match in a list 
+    for(var i = 0; i < list.length; i++) {
+      var current = list[i]; 
+      current = current.toLowerCase();
+      current = current.replace(/\s/g, '');
+      if(current.includes(searchFor)) {
+          return true;
+      }
+    }
+    return false; 
   }
 
   handleShow(num, dept, name, descr, cross, pre) {
@@ -54,6 +101,8 @@ class Courses extends Component {
   }
 
   handleClose() {
+
+    //resets everything 
     this.setState({
       number: "", 
       department: "",
@@ -99,7 +148,7 @@ class Courses extends Component {
 
 
   handleAdd() {
-    if(this.props.add(this.state.number)) {
+    if(this.props.add(this.state.department + " " + this.state.number)) {
       this.handleClose();
     } else {
       //show an alert, which will be set back to false when you close out
@@ -118,7 +167,7 @@ class Courses extends Component {
           </Modal.Header>
           <Modal.Body>{this.renderModalBody()}</Modal.Body>
           <Modal.Footer>
-            {!this.props.selected.includes(this.state.number) ?
+            {!this.props.selected.includes(this.state.department + " " + this.state.number) ?
             <Button variant="primary" onClick={()=> {
               this.handleAdd();
             }}>
