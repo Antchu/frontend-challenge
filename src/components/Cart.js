@@ -13,8 +13,6 @@ class Cart extends Component {
     }
   }
 
-
-
   handleCheckOut() {
     if (this.errorCheck()) {
       this.handleShow();
@@ -34,16 +32,17 @@ class Cart extends Component {
   renderAdded() {
     var self = this;
     var i = 0;
+
     var rows = (self.props.fetched).map((index) => {
       i++;
       return (
         <tr>
-          <td> {i + 1} </td>
+          <td> {i} </td>
           <td> {self.props.items[i - 1]} </td>
           <td> {index[1]} </td>
           <td> {index[2]} </td>
           <td> {index[3]} </td>
-          <td>< Button onClick={() => { self.props.remove(index[0]) }}> Remove </Button></td>
+          <td>< Button onClick={() => {self.props.remove(self.props.items[i - 1]) }}> Remove </Button></td>
         </tr>)
     }
     )
@@ -65,6 +64,7 @@ class Cart extends Component {
   }
 
   handleVideo() {
+    //credits to github user I pulled this plugin from 
     const opts = {
       height: '390',
       width: '640',
@@ -76,7 +76,6 @@ class Cart extends Component {
 
     var item = links[Math.floor(Math.random() * links.length)];
     item = item.substring(item.indexOf("=") + 1);
-    console.log(item);
     return <YouTube
       videoId={item}
       opts={opts}
@@ -84,20 +83,20 @@ class Cart extends Component {
     />
 
   }
-  
+
   showCourses() {
-    var htmlReturn = []; 
+    var htmlReturn = [];
     Object.keys(this.props.items).map((key) => htmlReturn.push(
       <p> {this.props.items[key]} </p>))
 
-      return htmlReturn;
+    return htmlReturn;
   }
 
   renderModalBody() {
     return <div>
-      <p> You Have Successfully Checked Out: </p>
-        {this.showCourses()}
-      <p> Looks like you added a lot of hard classes... this'll get
+      <p> The following courses have been added to your schedule: </p>
+      {this.showCourses()}
+      <p> Hmm looks like you added a lot of rough classes... this'll get
         you through the hard times </p>
       {this.handleVideo()}
 
@@ -114,18 +113,20 @@ class Cart extends Component {
     this.setState({
       show: false
     });
-    
+
   }
 
 
   render() {
-    //console.log(this.props.fetched);
     return (
       <div style={{
         border: '1px solid rgba(0, 0, 0, 0.1)',
         padding: '1rem',
+        marginTop: '1.5rem',
         marginBottom: '1.5rem',
         borderRadius: '4px',
+        backgroundColor: 'white',
+        boxShadow: `0px 2px 10px 3px #f2f2f2`
       }}>
         <h4>Course Cart</h4>
 
@@ -145,10 +146,14 @@ class Cart extends Component {
             </Table>
             {this.renderSummary()}
 
-            <Modal show={this.state.show} onHide={() => this.handleClose()}
-             size="lg">
+            <Modal
+              style={{ textAlign: "center" }}
+              show={this.state.show}
+              onHide={() => this.handleClose()}
+              centered
+              size="lg">
               <Modal.Header closeButton>
-                <Modal.Title>{this.state.department} {this.state.number} </Modal.Title>
+                <Modal.Title>  Success! </Modal.Title>
               </Modal.Header>
               <Modal.Body>{this.renderModalBody()}</Modal.Body>
             </Modal>
@@ -165,6 +170,8 @@ class Cart extends Component {
 
 var links = ["https://www.youtube.com/watch?v=LDU_Txk06tM",
   "https://www.youtube.com/watch?v=u155ncSlkCk",
-  "https://www.youtube.com/watch?v=kN29b1-hhZ0"
+  "https://www.youtube.com/watch?v=kN29b1-hhZ0",
+  "https://www.youtube.com/watch?v=gO8N3L_aERg",
+  "https://www.youtube.com/watch?v=ssIY8NYwvh4"
 ];
 export default Cart;

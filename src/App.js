@@ -29,6 +29,7 @@ class App extends Component {
   }
 
   addCourse(newCourse) {
+
     //checks if we have not selected this course already
     if (!this.state.selected.includes(newCourse) && this.state.selected.length < 7) {
 
@@ -44,6 +45,7 @@ class App extends Component {
   }
 
   removeCourse(newCourse) {
+    console.log("in remove now")
 
     //checks if the list has the item first 
     if (this.state.selected.includes(newCourse)) {
@@ -57,6 +59,7 @@ class App extends Component {
           newList.push(this.state.selected[i])
         }
       }
+
       var newInfoState = this.fetchData(newList);
       this.setState({ selected: newList, info: newInfoState });
       //console.log("is this before the []")
@@ -120,7 +123,7 @@ class App extends Component {
             onClick={() => {
               this.setState({ clickedCart: !this.state.clickedCart })
               this.handleSelect("")
-          }}>
+            }}>
 
             Cart <Badge variant="light">{this.state.selected.length}</Badge>
           </Button> :
@@ -144,13 +147,14 @@ class App extends Component {
           <div >
             {this.state.clickedCart ?
               <Cart className="cart"
-                
+                toggle={() => {
+                  this.setState({ clickedCart: !this.state.clickedCart })}}
                 items={this.state.selected}
                 fetched={this.state.info}
                 remove={this.removeCourse.bind(this)} /> :
               <div>
                 <div className="checkBoxes">
-                  <div> Search By:  </div>
+                  <div className="header"> Search By:  </div>
 
                   <Form.Check
                     defaultChecked
@@ -178,8 +182,17 @@ class App extends Component {
                     onClick={() => this.setState({ criteria: "title" })}
                   />
                 </div>
-                <Form>
+                <Form className="textEntry">
                   <Form.Control
+                    style={{
+                      border: '1px solid rgba(0, 0, 0, 0.1)',
+                      padding: '1rem',
+                      marginBottom: '1.5rem',
+                      borderRadius: '4px',
+                      backgroundColor: 'white',
+                      boxShadow: `0px 2px 10px 3px #f2f2f2`
+                    }}
+                    size="lg"
                     placeholder="Search for a Course"
                     onChange={(value) => { this.handleSelect(value.target.value) }}
                   />
