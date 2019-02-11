@@ -32,17 +32,21 @@ class Cart extends Component {
   renderAdded() {
     var self = this;
     var i = 0;
-
     var rows = (self.props.fetched).map((index) => {
       i++;
+      var cName = self.props.items[i - 1];
       return (
         <tr>
           <td> {i} </td>
-          <td> {self.props.items[i - 1]} </td>
+          <td> {cName} </td>
           <td> {index[1]} </td>
           <td> {index[2]} </td>
           <td> {index[3]} </td>
-          <td>< Button onClick={() => {self.props.remove(self.props.items[i - 1]) }}> Remove </Button></td>
+          <td>< Button onClick={() => {
+            console.log(i - 1);
+             self.props.remove(cName) 
+            self.props.toggle();
+           }}> Remove </Button></td>
         </tr>)
     }
     )

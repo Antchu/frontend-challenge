@@ -2,10 +2,9 @@ import React, { Component } from 'react'
 import './App.css'
 import Button from 'react-bootstrap/Button';
 import img from './images/cart.png'
-import Nav from './components/Nav'
 import Courses from './components/Courses'
 import Cart from './components/Cart'
-import { Tabs, Tab, FormControl, Form, Badge } from 'react-bootstrap'
+import { FormControl, Form, Badge, Modal } from 'react-bootstrap'
 
 class App extends Component {
   constructor(props) {
@@ -17,12 +16,14 @@ class App extends Component {
       key: "",
       criteria: "course",
       selected: new Array(),
-      info: []
+      info: [],
+      show: false
     }
 
     this.addCourse.bind(this);
   }
 
+  
   handleSelect(selectedTab) {
 
     this.setState({ key: selectedTab });
@@ -45,7 +46,7 @@ class App extends Component {
   }
 
   removeCourse(newCourse) {
-    console.log("in remove now")
+    console.log(newCourse)
 
     //checks if the list has the item first 
     if (this.state.selected.includes(newCourse)) {
@@ -107,6 +108,14 @@ class App extends Component {
       });
   }
 
+  toggle() {
+    this.setState({show:true, clickedCart: false});
+  }
+
+  handleClose() {
+    this.setState({show: false, clickedCart: true});
+  }
+
   render() {
     return (
       <div className="appbody">
@@ -141,14 +150,13 @@ class App extends Component {
         }}>
 
 
-          <img src={img} className="logo" />
+          <img src={img} className="logo" alt=""/>
 
 
           <div >
             {this.state.clickedCart ?
               <Cart className="cart"
-                toggle={() => {
-                  this.setState({ clickedCart: !this.state.clickedCart })}}
+                toggle={() => {this.toggle()}}
                 items={this.state.selected}
                 fetched={this.state.info}
                 remove={this.removeCourse.bind(this)} /> :
@@ -208,6 +216,18 @@ class App extends Component {
             }
           </div>
         </div>
+
+        <Modal
+              style={{ textAlign: "center" }}
+              show={this.state.show}
+              onHide={() => this.handleClose()}
+              centered>
+              <Modal.Header closeButton>
+                <Modal.Title>  Course Removed </Modal.Title>
+              </Modal.Header>
+              <Modal.Body></Modal.Body>
+            </Modal>
+
       </div>
     );
   }
