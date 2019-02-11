@@ -63,6 +63,7 @@ src/                   Where the JS logic is
   as information I fetched with a call to the Penn Labs API 
   * The bottom of the table contains a label that shows the total number of credits a student has selected as well as a button to check out. 
     * clicking this button results in a receipt modal to show what they have checked out and a nice video player to a wholesome youtube video :) 
+    * these videos are a hardcoded list of funny videos I like to watch and one is randomly chosen to be displayed with each checkout 
 
 4. __Additional features__
 
@@ -71,4 +72,4 @@ src/                   Where the JS logic is
 
 --------------------
 
-### I hope you all enjoy my product it was pretty fun! 
+### I hope you all enjoy my project. It was pretty fun! (lmk if you like my choice in videos)
