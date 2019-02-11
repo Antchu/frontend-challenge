@@ -29,8 +29,6 @@ class App extends Component {
   }
 
   addCourse(newCourse) {
-
-    //TO DO: MAKE AN ALERT WHEN THERES ALREADY 7 COURSES 
     //checks if we have not selected this course already
     if (!this.state.selected.includes(newCourse) && this.state.selected.length < 7) {
 
@@ -46,63 +44,64 @@ class App extends Component {
   }
 
   removeCourse(newCourse) {
-    
+
     //checks if the list has the item first 
     if (this.state.selected.includes(newCourse)) {
 
       //assigns a copy and removes the value
       var newList = [];
-      for(var i = 0; i < this.state.selected.length; i++) {
-        if(this.state.selected[i] === newCourse) {
-          continue; 
+      for (var i = 0; i < this.state.selected.length; i++) {
+        if (this.state.selected[i] === newCourse) {
+          continue;
         } else {
           newList.push(this.state.selected[i])
         }
       }
       var newInfoState = this.fetchData(newList);
-      this.setState({ selected: newList, info: newInfoState});
+      this.setState({ selected: newList, info: newInfoState });
+      //console.log("is this before the []")
     }
   }
 
   fetchData(toChange) {
+    var cred = 0;
     var newInfoState = [];
     for (var i = 0; i < toChange.length; i++) {
       //call another function to make sure items are saved due to async
-      var newCourse = {};
+      var newCourse = [];
       var course = toChange[i];
       var num = toChange[i].substring(toChange[i].length - 3);
-      this.fetchIter(newInfoState, newCourse, course, num);
+      cred = this.fetchIter(newInfoState, newCourse, course, num, cred);
     }
 
     //set state
     return newInfoState;
-    
-    
-
   }
 
-  fetchIter(newInfoState, newCourse, key, link) {
+  fetchIter(newInfoState, newCourse, key, link, creds) {
     fetch('https://api.pennlabs.org/registrar/search?q=cis-' + link)
-    .then(response => response.json())
-    .then(data => {
-      //extract open status, max enrollment, credits, etc 
-      var relevantInfo = data["courses"][0];
-      if (relevantInfo === undefined) {
-        newCourse["open"] = "-";
-        newCourse["size"] = "-";
-        newCourse["cu"] = "-";
-        newCourse["key"] = key;
-        newInfoState.push(newCourse);
+      .then(response => response.json())
+      .then(data => {
+        //extract open status, max enrollment, credits, etc 
+        var relevantInfo = data["courses"][0];
+        if (relevantInfo === undefined) {
+          newCourse.push("-");
+          newCourse.push("-");
+          newCourse.push("-");
+          newCourse.push("-");
+          newInfoState.push(newCourse);
 
-      } else {
-        newCourse["key"] = key;
-        newCourse["open"] = relevantInfo["course_status_normalized"] === "Open" ? "Y" : "N";
-        newCourse["size"] = relevantInfo["max_enrollment"];
-        newCourse["cu"] = relevantInfo["maximum_credit"];
-        newInfoState.push(newCourse);
-      }
+        } else {
+          newCourse.push(key);
+          newCourse.push(relevantInfo["course_status_normalized"] === "Open" ? "Y" : "N");
+          newCourse.push(relevantInfo["max_enrollment"]);
+          newCourse.push(relevantInfo["maximum_credit"]);
+          creds += parseInt(relevantInfo["maximum_credit"]);
+          newInfoState.push(newCourse);
+          return creds;
+        }
 
-    });
+      });
   }
 
   render() {
@@ -118,7 +117,10 @@ class App extends Component {
         {this.state.clickedCart ?
           <Button variant="primary"
             className="cartButton"
-            onClick={() => this.setState({ clickedCart: !this.state.clickedCart })}>
+            onClick={() => {
+              this.setState({ clickedCart: !this.state.clickedCart })
+              this.handleSelect("")
+          }}>
 
             Cart <Badge variant="light">{this.state.selected.length}</Badge>
           </Button> :
@@ -142,6 +144,7 @@ class App extends Component {
           <div >
             {this.state.clickedCart ?
               <Cart className="cart"
+                
                 items={this.state.selected}
                 fetched={this.state.info}
                 remove={this.removeCourse.bind(this)} /> :
@@ -150,6 +153,7 @@ class App extends Component {
                   <div> Search By:  </div>
 
                   <Form.Check
+                    defaultChecked
                     type="radio"
                     inline
                     label="Course"
@@ -175,7 +179,10 @@ class App extends Component {
                   />
                 </div>
                 <Form>
-                  <Form.Control placeholder="Search for a Course" onChange={(value) => { this.handleSelect(value.target.value) }} />
+                  <Form.Control
+                    placeholder="Search for a Course"
+                    onChange={(value) => { this.handleSelect(value.target.value) }}
+                  />
                 </Form>
                 <Courses
                   filter={this.state.criteria}
