@@ -26,6 +26,7 @@ class Courses extends Component {
     
       var htmlReturn = []; 
       {Object.keys(courses).map((index) => {
+        
         var stringNum = "" + courses[index]["number"];
         var dept = courses[index]["dept"];
         var title = courses[index]["title"];
@@ -138,8 +139,8 @@ class Courses extends Component {
           {this.state.description}
         </div>
         <div className="smallerItems">
-          <p> {this.state.pre === "" ? '' : "Prerequisites: " + this.state.pre}</p>
-          <p>{this.state.cross === "" ? '' : "Cross-Listed As: " + this.state.cross}</p>
+          {this.state.pre == "" ? '' : <span > <span className="smallHeader"> Prerequisites: </span>  {this.state.pre}</span>}
+          {this.state.cross == "" ? '' : <span > <span className="smallHeader"> Cross-Listed As: </span>  {this.state.cross}</span>}
         </div>
         {this.state.showAlert && <div className="alert"> You have 7 Courses In Your Cart </div>}
       </div>
