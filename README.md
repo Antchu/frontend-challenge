@@ -14,7 +14,9 @@ For my implementation of the Penn Course Cart Challenge, I seperated the project
 
 I used the provided JS files and JSON files for the skeleton of my app's functionality. Additionally, I used React Bootstrap to 
 style my components quickly given time constraints. Additionally, I used the Penn Labs API for additional information about courses
-that I personally like to see when browsing for courses. 
+that I personally like to see when browsing for courses. I also used a Youtube React Component: Credit goes to 
+
+https://github.com/troybetz/react-youtube
 
 
 --------------------
