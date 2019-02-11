@@ -134,7 +134,7 @@ class App extends Component {
               this.handleSelect("")
             }}>
 
-            Cart <Badge variant="light">{this.state.selected.length}</Badge>
+            Close Cart <Badge variant="light">{this.state.selected.length}</Badge>
           </Button> :
           <Button variant="outline-primary"
             className="cartButton"
