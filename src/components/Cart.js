@@ -43,7 +43,6 @@ class Cart extends Component {
           <td> {index[2]} </td>
           <td> {index[3]} </td>
           <td>< Button onClick={() => {
-            console.log(i - 1);
              self.props.remove(cName) 
             self.props.toggle();
            }}> Remove </Button></td>

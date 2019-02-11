@@ -46,8 +46,6 @@ class App extends Component {
   }
 
   removeCourse(newCourse) {
-    console.log(newCourse)
-
     //checks if the list has the item first 
     if (this.state.selected.includes(newCourse)) {
 
@@ -63,7 +61,6 @@ class App extends Component {
 
       var newInfoState = this.fetchData(newList);
       this.setState({ selected: newList, info: newInfoState });
-      //console.log("is this before the []")
     }
   }
 
