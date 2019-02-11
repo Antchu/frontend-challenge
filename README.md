@@ -1,21 +1,21 @@
-# Penn Labs Frontend Challenge
+# Penn Course Cart
 
-The frontend challenge for this semester is to build a product called Penn Course Cart in React! The goal of this challenge is for you to demonstrate:
+For my implementation of the Penn Course Cart Challenge, I seperated the project into 3 main files: 
 
-1. An eye for building intuitive, feature-rich user interfaces
-2. Ability to build products with minimal direction
-3. Ability to work within a set timeline
+1. App.js to handle exhcanging information between the courses and cart, 
 
-More concretely, you will build an interface where users can explore computer science courses added at Penn, can add them to a cart, and checkout.
+2. Cart.js to take in all the selected courses and display additional information about the classes 
+
+3. A Courses.js to handle loading all the CIS courses provided in the JSON file 
 
 --------------------
 
-### Getting started
+### Structure 
 
-* Fork this repository to your own GitHub account
-* Clone the repository to your own computer
-* `cd` into the cloned directory and run either `yarn` or `npm install`
-* Run `yarn start` or `npm run dev`
+I used the provided JS files and JSON files for the skeleton of my app's functionality. Additionally, I used React Bootstrap to 
+style my components quickly given time constraints. Additionally, I used the Penn Labs API for additional information about courses
+that I personally like to see when browsing for courses. 
+
 
 --------------------
 
@@ -46,66 +46,29 @@ src/                   Where the JS logic is
 ### Features
 
 1. __Explore courses__
-  * If you view `src/components/Courses.js`, you'll see that it is rendering *some* of the courses data from `src/data/courses.json`
-  * What you need to do is design a more robust way to display this courses information. You should display all information contained in the JSON--though put some thought into how to go about doing this.
-    * For example, you might only want to show the description once the user clicks on the course.
+  Using the Form component from my component library, I used the onChange handle to pass the text entered in the field from my App.js to Courses.js. Inside Courses.js
+  I had function that went through courses.json and showed a course if a subset of its information matched the text entry. For example, if the user had check to search 
+  by "courses" my method would include all courses whose official CIS title or Cross Listed Title contained the text entry as a substring. 
 
 2. __Add courses to your cart__
-  * A user should be able to add a subset of these courses to their cart.
-    * The user should not be able to add more than 7 courses to their cart.
-  * When a user adds a course, this addition should be reflected in:
-    1. How that cart is rendered
-    2. How that course is rendered
-      * For example, there should not still be a button to add that course to the cart, and maybe the text should be grayed out.
+  *Clicking the button corresponding to a course opens a modal with the basic information about the course(title, course code, description). There is also a button 
+  that, when clicked, adds the course to a list. This button is not visible if we already have 7 courses in the list. 
+  * I kept a counter of the number of courses we have added to far to check if I should make an alert if the user tries to add an 8th course
+  * When a course has been added, the Cart button in the upper right's badge increases in its value to reflect the number of courses we have selected. The course's modal
+  will also now contain a disabled button marked "Already in Cart" so we can't re add a course that has already been selected. 
 
 3. __View cart and checkout__
-  * The user should be able to click a button to view their cart.
-    * If the cart has no items in it, tell the user that their cart is empty.
-    * If the cart has courses it in, display the courses and relevant information about them.
-  * When the user is satisfied with their course cart, they should be able to "checkout"
-    * This will either take the user to a new page containing (or will display on the same page) a "receipt" containing the courses which they checked out with.
+  * The cart button in the upper right can be clicked to view the current state of the cart. 
+  * If there is nothing selected, there will be a box saying that nothing has been selected, else there is a table with each row being a selected course as well 
+  as information I fetched with a call to the Penn Labs API 
+  * The bottom of the table contains a label that shows the total number of credits a student has selected as well as a button to check out. 
+    * clicking this button results in a receipt modal to show what they have checked out and a nice video player to a wholesome youtube video :) 
 
 4. __Additional features__
 
-  * Feel free to add other features as well! Here are some ideas:
-    * Add animations for adding and viewing courses and the cart
-    * Let users rank courses in order of preference
-    * Allow users to filter and sort courses by different metrics
-    * Integrate other data (course times, when they're offered, etc.)
-      * For example, ping the Penn Labs API
-
-```
-fetch(https://api.pennlabs.org/registrar/search?q=cis-110)
-```
+  * I used the Penn Labs API to display only the relevant information such as whether or not a course is open, its max enrollment, etc 
+  * I created 3 checkboxes above the text entry so users can search by description, prerequsites and course code, or title 
 
 --------------------
 
-### Additional tips
-
-* For styling, use whatever you want:
-  * CSS frameworks (Bulma, Bootstrap)
-  * CSS files (or SCSS)
-  * CSS-in-JS
-  * `styled-components`
-  * ...
-
-* For state management:
-  * Vanilla react state and props
-  * Redux
-  * ...
-
-* For navigation:
-  * React Router
-  * ...
-
---------------------
-
-### Getting help
-
-If you have any questions about the project or need some help, send an email to __Cameron Cabo__ (ccabo@seas.upenn.edu) or message him on [Facebook](https://www.facebook.com/cam.cabo).
-
---------------------
-
-### Submitting
-
-Send a link to your git repository with subject "Penn Labs Frontend Challenge" to contact@pennlabs.org by 8:00 AM on Monday, February 11th.
+### I hope you all enjoy my product it was pretty fun! 
